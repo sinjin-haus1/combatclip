@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: combatclip_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - combatclip
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: combatclip_api
+    restart: unless-stopped
+    environment:
+      MONGODB_URI: mongodb://admin:password@mongodb:27017/combatclip
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      TIKTOK_CLIENT_KEY: ${TIKTOK_CLIENT_KEY}
+      TIKTOK_CLIENT_SECRET: ${TIKTOK_CLIENT_SECRET}
+      INSTAGRAM_CLIENT_ID: ${INSTAGRAM_CLIENT_ID}
+      INSTAGRAM_CLIENT_SECRET: ${INSTAGRAM_CLIENT_SECRET}
+      YOUTUBE_CLIENT_ID: ${YOUTUBE_CLIENT_ID}
+      YOUTUBE_CLIENT_SECRET: ${YOUTUBE_CLIENT_SECRET}
+      PORT: 3000
+      FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - combatclip
+
+volumes:
+  mongodb_data:
+
+networks:
+  combatclip:
+    driver: bridge

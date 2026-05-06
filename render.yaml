@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: combatclip-api
+    runtime: docker
+    dockerfile: Dockerfile
+    port: 3000
+    envVars:
+      MONGODB_URI:
+        fromService: mongodb
+      CLOUDINARY_CLOUD_NAME: your_cloud_name
+      CLOUDINARY_API_KEY: your_api_key
+      CLOUDINARY_API_SECRET: your_api_secret
+      OPENAI_API_KEY: your_openai_key
+      TIKTOK_CLIENT_KEY: your_tiktok_client_key
+      TIKTOK_CLIENT_SECRET: your_tiktok_client_secret
+      INSTAGRAM_CLIENT_ID: your_instagram_client_id
+      INSTAGRAM_CLIENT_SECRET: your_instagram_client_secret
+      YOUTUBE_CLIENT_ID: your_youtube_client_id
+      YOUTUBE_CLIENT_SECRET: your_youtube_client_secret
+      PORT: "3000"
+      FRONTEND_URL: https://combatclip.app
+
+  - type: mongo
+    name: mongodb
+    ip: 192.168.0.4
